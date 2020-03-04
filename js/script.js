@@ -47,8 +47,9 @@ designMenu.addEventListener('change', (e) => {
             listItem.hidden = true;
         }
     }
-    // --> need to select the first color option after unhiding
 });
+
+
 
 // Register for Activities Section
 const activityFieldset = document.querySelector('.activities');
@@ -88,3 +89,42 @@ activityFieldset.addEventListener('change', (e) => {
     activityFieldset.appendChild(costLabel);
 });
 
+// "Payment Info" section
+const paymentOptions = document.querySelector('#payment');
+const creditCardDiv = document.querySelector('#credit-card');
+const paypalDiv = document.querySelector('#paypal');
+const bitcoinDiv = document.querySelector('#bitcoin');
+
+const payShow = {
+    paypal: () => {
+        paypalDiv.hidden = false;
+        creditCardDiv.hidden = true;
+        bitcoinDiv.hidden = true;
+    },
+    bitcoin: () => {
+        bitcoinDiv.hidden = false;
+        creditCardDiv.hidden = true;
+        paypalDiv.hidden = true;
+    },
+    'credit card': () => {
+        creditCardDiv.hidden = false;
+        bitcoinDiv.hidden = true;
+        paypalDiv.hidden = true;
+    }
+};
+
+for (i = 0; i < paymentOptions.children.length; i ++){
+    // hide first option
+    if (i === 0){
+        paymentOptions[i].hidden = true;
+    // select Credit Card option by default, hide other divs
+    } else if (i === 1){
+        paymentOptions[i].selected = true;
+        payShow['credit card']();
+    }
+}
+
+paymentOptions.addEventListener('change', (e) => {
+    let payChoice = e.target.value;
+    payShow[payChoice]();
+})
