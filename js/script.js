@@ -122,9 +122,82 @@ for (i = 0; i < paymentOptions.children.length; i ++){
         paymentOptions[i].selected = true;
         payShow['credit card']();
     }
-}
+};
 
 paymentOptions.addEventListener('change', (e) => {
     let payChoice = e.target.value;
     payShow[payChoice]();
-})
+});
+
+
+// form validation
+function nameValid(name){
+    return /^$/.test(name);
+};
+
+function emailValid(email){
+    return /^[^@]+@[^@.]+\.\w+/.test(email);
+}
+
+function atLeastOne(){
+    let checked = 0;
+    for (i = 0; i < activities.length; i ++){
+        checked += activities[i].checked;
+    }
+
+    return checked > 0 ? true : false;
+}
+
+function creditNumValid(creditNum){
+    return /^\d{13,16}$/.test(creditNum);
+}
+
+function zipValid(zipCode){
+    return /^\d{5}$/.test(zipCode);
+}
+
+function cvvValid(cvv){
+    return /^\d{3}$/.test(cvv);
+}
+
+
+const emailInput = document.querySelector('#mail');
+const ccNum = document.querySelector('#cc-num');
+const zipCode = document.querySelector('#zip');
+const cvv = document.querySelector('#cvv');
+
+// real-time error messages
+nameInput.addEventListener('focusout', (e) => {
+    const name = nameInput.value;
+    const tooltip = e.target.nextElementSibling;
+    if (nameValid(name)){
+        tooltip.hidden = false;
+    } else {
+        tooltip.hidden = true;
+    }
+});
+
+// add listener to submit button
+const form = document.querySelector('form');
+form.addEventListener('submit', (e) => {
+    if (creditCardDiv.hidden){
+        allow = !nameValid(nameInput) &&
+                    emailValid(emailInput) &&
+                    atLeastOne();
+    } else {
+        allow = !nameValid(nameInput) &&
+                    emailValid(emailInput) &&
+                    atLeastOne() &&
+                    creditNumValid(ccNum) &&
+                    zipValid(zipCode) &&
+                    cvvValid(cvv);
+    }
+
+    if (allow){
+        e.preventDefault();
+        console.log("you're all set! good job");
+    } else {
+        e.preventDefault();
+        console.log('fix it');
+    }
+});
