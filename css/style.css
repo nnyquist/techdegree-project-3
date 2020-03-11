@@ -214,3 +214,25 @@ option {
 		clear: both;
 	}
 }
+
+/* ================================= 
+  Form Validation Styles
+==================================== */
+.error {
+    border: 1px solid red;
+    background: #ffe5e9;
+}
+
+span {
+    font-family: 'Nunito', sans-serif;
+    position: relative;
+    margin-top: -15px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    font-size: .9em;
+    text-align: center;
+    display: none;
+    background: rgb(119, 8, 13);
+    padding: 5px 10px;
+    color: #fff;
+}
