@@ -107,6 +107,13 @@ function realTimeErrors(
   });
 }
 
+// Prevent Submit function
+function preventSubmit(domElement) {
+    const tooltip = domElement.nextElementSibling;
+    tooltip.style.display = 'inherit';
+    domElement.className = 'error';
+}
+
 /**
  * "Job Role" Section
  */
@@ -134,11 +141,11 @@ for (i = 0; i < colorOptions.length; i++) {
   colorOptions[i].hidden = true;
 }
 
-// Add default label for color until something is chosen
-colorDefault.value = "default";
-colorDefault.textContent = "Please select a T-shirt theme";
-colorDefault.selected = true;
-colorMenu.appendChild(colorDefault);
+// Add default label for color until something is chosen (Should no longer be needed based on the exceeds expectation section below)
+// colorDefault.value = "default";
+// colorDefault.textContent = "Please select a T-shirt theme";
+// colorDefault.selected = true;
+// colorMenu.appendChild(colorDefault);
 
 // Hide "color" label and drop down until a T-Shirt design is chosen
 colorMenu.hidden = true;
@@ -249,7 +256,7 @@ activityFieldset.addEventListener("change", e => {
   }
 });
 
-// 
+// Conditional Error Message for Credit Card Number
 ccNum.addEventListener("keyup", e => {
   const tooltip = e.target.nextElementSibling;
   const showAltMessage = ccNum.value === "" || /[^0-9]/.test(ccNum.value);
@@ -272,26 +279,33 @@ ccNum.addEventListener("keyup", e => {
 form.addEventListener("submit", e => {
     if (!nameBlank(nameInput.value)){
         e.preventDefault();
-        nameInput.focus();
-    } else if (!emailValid(emailInput.value)){
+        preventSubmit(nameInput);
+    } 
+    
+    if (!emailValid(emailInput.value)){
         e.preventDefault();
-        realTimeErrors(emailInput, "focusin", emailValid);
-        emailInput.focus();
-    } else if (!atLeastOne()){
+        preventSubmit(emailInput);
+    }
+    
+    if (!atLeastOne()){
         e.preventDefault();
         const tooltip = document.querySelector(".activities span");
         tooltip.style.display = 'inherit';
-    } else if (!creditCardDiv.hidden && !creditNumValid(ccNum.value)){
+    } 
+    
+    if (!creditCardDiv.hidden && !creditNumValid(ccNum.value)){
         e.preventDefault();
-        ccNum.focus();
-    } else if (!creditCardDiv.hidden && !zipValid(zipCode.value)){
+        preventSubmit(ccNum);
+    }
+    
+    if (!creditCardDiv.hidden && !zipValid(zipCode.value)){
         e.preventDefault();
-        realTimeErrors(zipCode, "focusin", zipValid);
-        zipCode.focus();
-    } else if (!creditCardDiv.hidden && !cvvValid(cvv.value)){
+        preventSubmit(zipCode);
+    }
+    
+    if (!creditCardDiv.hidden && !cvvValid(cvv.value)){
         e.preventDefault();
-        realTimeErrors(cvv, "focusin", cvvValid);
-        cvv.focus();
+        preventSubmit(cvv);
     }
 });
 
